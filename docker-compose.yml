@@ -1,0 +1,81 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.0
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+    command:
+      - start-dev
+      - --import-realm
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - ASPNETCORE_URLS=http://+:4000
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Authentication__Authority=http://keycloak:8080/realms/bff-realm
+      - Authentication__Audience=account
+      - Authentication__RequireHttpsMetadata=false
+    networks:
+      - app-network
+    depends_on:
+      keycloak:
+        condition: service_healthy
+
+  bff:
+    build:
+      context: ./backend-for-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - ASPNETCORE_URLS=http://+:3000
+      - ASPNETCORE_ENVIRONMENT=Development
+      - OAuth__Authority=http://keycloak:8080/realms/bff-realm
+      - OAuth__ClientId=bff-client
+      - OAuth__ClientSecret=bff-secret
+      - OAuth__RedirectUri=http://localhost:3000/auth/callback
+      - OAuth__PostLogoutRedirectUri=http://localhost:4200/
+      - OAuth__Scopes__0=openid
+      - OAuth__Scopes__1=profile
+      - OAuth__Scopes__2=user:read
+      - OAuth__Scopes__3=user:write
+      - ApiProxy__ApiBaseUrl=http://api:4000
+    networks:
+      - app-network
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      api:
+        condition: service_started
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    networks:
+      - app-network
+    depends_on:
+      - bff
+
+networks:
+  app-network:
+    driver: bridge

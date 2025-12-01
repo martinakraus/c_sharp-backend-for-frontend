@@ -1,0 +1,46 @@
+<div class="user-container">
+  <div class="user-content">
+    <header class="user-header">
+      <h1>Nutzerverwaltung</h1>
+      <p class="subtitle">Verwalte alle Nutzer im System</p>
+      <button class="create-button" (click)="navigateToCreateUser()">
+        <span class="plus-icon">+</span> Neuen Nutzer anlegen
+      </button>
+    </header>
+
+    @if (isLoading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Lade Nutzer...</p>
+      </div>
+    }
+
+    @if (hasError()) {
+      <div class="error-state">
+        <p>{{ errorMessage() }}</p>
+        <button class="retry-button" (click)="loadUsers()">Erneut versuchen</button>
+      </div>
+    }
+
+    @if (showUsersList()) {
+      <div class="users-list">
+        @for (user of users(); track trackByUserId($index, user)) {
+          <div class="user-card" (click)="viewUserDetails(user.id)">
+            <div class="user-avatar">
+              {{ user.name.charAt(0).toUpperCase() }}
+            </div>
+            <div class="user-info">
+              <h3 class="user-name">{{ user.name }}</h3>
+              <p class="user-email">{{ user.email }}</p>
+              <p class="user-id">ID: {{ user.id }}</p>
+            </div>
+          </div>
+        } @empty {
+          <div class="empty-state">
+            <p>Keine Nutzer gefunden.</p>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

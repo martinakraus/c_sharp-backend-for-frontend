@@ -1,0 +1,42 @@
+<!-- @if (profile(); as profile) {
+  <div class="profile-container">
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="profile-avatar-placeholder">
+          {{ profile.firstName?.charAt(0) || 'U' }}{{ profile.lastName?.charAt(0) || '' }}
+        </div>
+        <div class="profile-header-info">
+          <h1 class="profile-name">{{ profile.firstName }} {{ profile.lastName }}</h1>
+          <p class="profile-nickname">@{{ profile.username }}</p>
+        </div>
+      </div>
+
+      <div class="profile-details">
+        <div class="detail-item">
+          <span class="detail-label">Given Name</span>
+          <span class="detail-value">{{ profile.firstName }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Family Name</span>
+          <span class="detail-value">{{ profile.lastName }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Email</span>
+          <span class="detail-value">
+            {{ profile.email }}
+            @if (profile.emailVerified) {
+              <span class="verified-badge">✓ Verified</span>
+            }
+          </span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Username</span>
+          <span class="detail-value">{{ profile.username }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+} -->

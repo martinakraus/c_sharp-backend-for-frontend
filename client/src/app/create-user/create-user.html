@@ -1,0 +1,68 @@
+<div class="create-user-container">
+  <div class="create-user-content">
+    <header class="create-user-header">
+      <h1>Neuen Nutzer anlegen</h1>
+      <p class="subtitle">Erstelle einen neuen Nutzer im System</p>
+    </header>
+
+    <form class="create-user-form" [formGroup]="userForm" (ngSubmit)="createUser()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          placeholder="Max Mustermann"
+          [attr.disabled]="isSubmitting() ? '' : null"
+          required
+        />
+        @if (userForm.controls.name.invalid && userForm.controls.name.touched) {
+          <span class="field-error">Bitte gib einen gültigen Namen ein (mind. 2 Zeichen).</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-Mail</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="max@example.com"
+          [attr.disabled]="isSubmitting() ? '' : null"
+          required
+        />
+        @if (userForm.controls.email.invalid && userForm.controls.email.touched) {
+          <span class="field-error">Bitte gib eine gültige E-Mail-Adresse ein.</span>
+        }
+      </div>
+
+      @if (errorMessage()) {
+        <div class="error-message">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <div class="button-group">
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="isSubmitting()"
+        >
+          @if (isSubmitting()) {
+            Wird erstellt...
+          } @else {
+            Nutzer anlegen
+          }
+        </button>
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="cancel()"
+          [disabled]="isSubmitting()"
+        >
+          Abbrechen
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

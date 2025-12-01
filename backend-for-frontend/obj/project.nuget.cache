@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "UCo4MazGRC4=",
+  "success": true,
+  "projectFilePath": "/Users/martinakraus/Dev/book-coding-examples/c_sharp-backend-for-frontend/backend-for-frontend/backend-for-frontend.csproj",
+  "expectedPackageFiles": [
+    "/Users/martinakraus/.nuget/packages/microsoft.aspnetcore.openapi/10.0.0/microsoft.aspnetcore.openapi.10.0.0.nupkg.sha512",
+    "/Users/martinakraus/.nuget/packages/microsoft.openapi/2.0.0/microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,33 @@
+<header class="app-header">
+  <nav class="nav-container">
+    <div class="nav-brand">
+      <span class="brand-text">Angular BFF Example App</span>
+    </div>
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a routerLink="/about" routerLinkActive="active" class="nav-link">About</a>
+      </li>
+      @if (authService.isAuthenticated()) {
+        <li class="nav-item">
+          <a routerLink="/profile" routerLinkActive="active" class="nav-link">Profil</a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/user" routerLinkActive="active" class="nav-link">User</a>
+        </li>
+        <li class="nav-item">
+          <button (click)="logout()" class="nav-link nav-button logout-button">
+            <span class="button-icon">↗</span>
+            Logout
+          </button>
+        </li>
+      } @else {
+        <li class="nav-item">
+          <button (click)="login()" class="nav-link nav-button login-button">
+            <span class="button-icon">→</span>
+            Login
+          </button>
+        </li>
+      }
+    </ul>
+  </nav>
+</header>
