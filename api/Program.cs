@@ -31,8 +31,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             ValidIssuers =
             [
-                "http://keycloak:8080/realms/bff-realm",
-                "http://localhost:8080/realms/bff-realm"
+                "http://keycloak:8080/realms/bff-realm"
             ],
             ValidAudience = audience,
             ClockSkew = TimeSpan.Zero // Keine Zeittoleranz - Token läuft exakt zur angegebenen Zeit ab (default ist 5 Minuten)

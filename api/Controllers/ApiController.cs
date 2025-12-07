@@ -89,13 +89,4 @@ public class ApiController : ControllerBase
             newUser.Name, newUser.Id, newUser.Email);
         return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser);
     }
-
-    [HttpGet("claims")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult Claims()
-    {
-        var claims = User.Claims.Select(c => new { c.Type, c.Value }).ToList();
-        _logger.LogInformation("Claims abgerufen. Anzahl: {Count}", claims.Count);
-        return Ok(claims);
-    }
 }

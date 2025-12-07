@@ -21,13 +21,16 @@ builder.Services.AddSession(options =>
 
 // Configure OAuth options
 builder.Services.Configure<OAuthOptions>(builder.Configuration.GetSection("OAuth"));
-builder.Services.Configure<ApiProxyOptions>(builder.Configuration.GetSection("ApiProxy"));
 
 // Register services
 builder.Services.AddScoped<IPkceService, PkceService>();
 builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddScoped<IOAuthService, OAuthService>();
-builder.Services.AddScoped<IApiProxyService, ApiProxyService>();
+
+// Configure YARP Reverse Proxy with custom transform provider
+builder.Services.AddReverseProxy()
+    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
+    .AddTransforms<TokenTransformProvider>();
 
 // Configure CORS
 builder.Services.AddCors(options =>
@@ -53,5 +56,8 @@ app.UseSession();
 app.UseCors();
 app.UseHttpsRedirection();
 app.MapControllers();
+
+// Map YARP reverse proxy routes
+app.MapReverseProxy();
 
 app.Run();
